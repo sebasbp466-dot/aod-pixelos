@@ -4,4 +4,5 @@
         android:targetPackage="android"
         android:priority="99"
         android:isStatic="true" />
+    <application android:hasCode="false" />
 </manifest>
