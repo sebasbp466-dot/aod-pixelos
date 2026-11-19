@@ -1,0 +1,27 @@
+name: Build modulo AOD
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compilar overlay y empaquetar
+        run: |
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          JAR=$(ls -d $ANDROID_HOME/platforms/android-* | sort -V | tail -1)/android.jar
+          $BT/aapt2 compile --dir overlay-src/res -o compiled.zip
+          $BT/aapt2 link -o unsigned.apk -I $JAR \
+            --manifest overlay-src/AndroidManifest.xml \
+            --min-sdk-version 30 --target-sdk-version 34 compiled.zip
+          $BT/zipalign -f 4 unsigned.apk aligned.apk
+          keytool -genkeypair -keystore ks.jks -alias k -keyalg RSA -keysize 2048 \
+            -validity 10000 -storepass android -keypass android -dname "CN=aod"
+          $BT/apksigner sign --ks ks.jks --ks-pass pass:android \
+            --out module/system/product/overlay/AodEnable.apk aligned.apk
+          cd module && zip -r ../AOD-Enable.zip .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AOD-Enable
+          path: AOD-Enable.zip
