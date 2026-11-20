@@ -14,11 +14,11 @@ jobs:
           $BT/aapt2 compile --dir overlay-src/res -o compiled.zip
           $BT/aapt2 link -o unsigned.apk -I $JAR \
             --manifest overlay-src/AndroidManifest.xml \
-            --min-sdk-version 30 --target-sdk-version 34 compiled.zip
+            --min-sdk-version 30 --target-sdk-version 37 compiled.zip
           $BT/zipalign -f 4 unsigned.apk aligned.apk
           keytool -genkeypair -keystore ks.jks -alias k -keyalg RSA -keysize 2048 \
             -validity 10000 -storepass android -keypass android -dname "CN=aod"
-          $BT/apksigner sign --ks ks.jks --ks-pass pass:android \
+          $BT/apksigner sign --v4-signing-enabled false --ks ks.jks --ks-pass pass:android \
             --out module/system/product/overlay/AodEnable.apk aligned.apk
           cd module && zip -r ../AOD-Enable.zip .
       - uses: actions/upload-artifact@v4
