@@ -1,6 +1,6 @@
 id=aod_enable
-name=AOD Enable (Redmi 9)
-version=v1
-versionCode=1
+name=AOD Enable (custom ROMs)
+version=v2
+versionCode=2
 author=tu
-description=Activa la opción Pantalla siempre activa mediante overlay RRO
+description=Activa Pantalla siempre activa y la opcion de mostrar el fondo en el AOD (overlay RRO, Android 14+)
