@@ -5,4 +5,5 @@
     <bool name="config_displayBlanksAfterDoze">false</bool>
     <integer name="config_screenBrightnessDoze">20</integer>
     <bool name="config_dozeSupportsAodWallpaper">true</bool>
+    <bool name="config_dozeSupportsAodInactivityDetection">true</bool>
 </resources>
